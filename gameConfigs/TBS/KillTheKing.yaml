@@ -11,20 +11,20 @@ Agents:
 
 Tiles:
     Plain:
-        Sprite: ../../GUI/Assets/Tiles/plain.png
+        Sprite: ../../GUI/Assets/iso/plain.png
         Symbol: .
         IsWalkable: true
         DefaultTile: true
     Water:
-        Sprite: ../../GUI/Assets/Tiles/water.png
+        Sprite: ../../GUI/Assets/iso/water.png
         Symbol: W
         IsWalkable: false
     Mountain:
-        Sprite: ../../GUI/Assets/Tiles/rock.png
+        Sprite: ../../GUI/Assets/iso/rock.png
         Symbol: M
         IsWalkable: false
     Forest:
-        Sprite: ../../GUI/Assets/Tiles/forest.png
+        Sprite: ../../GUI/Assets/iso/forest.png
         Symbol: F
         IsWalkable: true
         
@@ -107,7 +107,7 @@ Actions:
 
 Entities:
     Warrior:
-        Sprite: ../../GUI/Assets/Entities/unit2.png
+        Sprite: ../../GUI/Assets/iso/basicCloseRange.png
         Symbol: w
         LineOfSightRange: 6
         Actions: [Attack, Move]
@@ -118,7 +118,7 @@ Entities:
             MovementPoints: 2
 
     Archer:
-        Sprite: ../../GUI/Assets/Entities/unit4.png
+        Sprite: ../../GUI/Assets/iso/basicLongRange.png
         Symbol: a
         LineOfSightRange: 10
         Parameters:
@@ -129,7 +129,7 @@ Entities:
         Actions: [Attack, Move]
 
     Healer:
-        Sprite: ../../GUI/Assets/Entities/unit3.png
+        Sprite: ../../GUI/Assets/iso/healer.png
         Symbol: h
         LineOfSightRange: 4
         Parameters:
@@ -140,7 +140,7 @@ Entities:
         Actions: [Heal, Move]
 
     King:
-        Sprite: ../../GUI/Assets/Entities/unit1.png
+        Sprite: ../../GUI/Assets/iso/advancedCloseRange.png
         Symbol: k
         LineOfSightRange: 6
         Parameters:

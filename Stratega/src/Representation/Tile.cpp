@@ -11,12 +11,17 @@ namespace SGA
 		return tileTypeID;
 	}
 
-
-	const std::string Tile::name() const {
-	
+	const std::string Tile::name() const
+	{
 		if(tileType != nullptr)
 			return tileType->name;
 		return "Fog";
 	}
+
+	const TileType& Tile::getType() const
+	{
+		return *tileType;
+	}
+
 
 }

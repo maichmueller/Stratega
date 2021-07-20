@@ -7,10 +7,10 @@ namespace SGA
 	struct Tile
 	{
 		Tile(int typeID,const TileType* tileType,int x, int y):
-			tileType(tileType),
 			isWalkable(true),
 			blocksSight(false),
-			position(x, y)
+			position(x, y),
+			tileType(tileType)
 		{
 
 		}
@@ -36,12 +36,16 @@ namespace SGA
 		/// </summary>
 		Vector2i position;
 
-
 		/// <summary>
 		/// Returns the name of this tile type
 		/// </summary>
 		/// <returns>Name ot the tile type of this type.</returns>
 		const std::string name() const;
+
+		/// <summary>
+		/// Returns the type of this tile
+		/// </summary>
+		const TileType& getType() const;
 		
 	private:
 

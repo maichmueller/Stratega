@@ -40,6 +40,11 @@ namespace SGA
 		reference get(int x, int y) { return grid[y * width + x]; }
 		const_reference get(int x, int y) const { return grid[y * width + x]; }
 
+		auto begin() { return grid.begin(); }
+		auto end() { return grid.end(); }
+		auto begin() const { return grid.begin(); }
+		auto end() const { return grid.end(); }
+
 		[[nodiscard]] size_t getWidth() const { return width; }
 		[[nodiscard]] size_t getHeight() const { return height; }
 		
