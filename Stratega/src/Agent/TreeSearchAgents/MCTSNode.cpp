@@ -165,26 +165,26 @@ namespace SGA
 
 		if (which == -1)
 		{
-			std::cout << "this subtree:" << "\n";
+			/*std::cout << "this subtree:" << "\n";
 			printTree();
 
-			std::cout << "\n\n" << "the whole tree:" << "\n";
+			std::cout << "\n\n" << "the whole tree:" << "\n";*/
 			MCTSNode* root = this;
 			while (root->parentNode != nullptr)
 			{
 				root = root->parentNode;
 			}
-			printTree("", root, true, "root");
-			std::cout << "\n\n";
+			//printTree("", root, true, "root");
+			//std::cout << "\n\n";
 
-			//if(this.children.length == 0)
-			std::cout << "Warning! couldn't find the best UCT value " << which << " : " << children.size() << "\n";
-			std::cout << nodeDepth << ", amIMoving? " << amIMoving << "\n";
+			////if(this.children.length == 0)
+			//std::cout << "Warning! couldn't find the best UCT value " << which << " : " << children.size() << "\n";
+			//std::cout << nodeDepth << ", amIMoving? " << amIMoving << "\n";
 
-			for (size_t i = 0; i < children.size(); ++i)
-				std::cout << "\t" << childValues[i] << "\n";
-			std::cout << "; selected: " << which << "\n";
-			std::cout << "; isFullyExpanded: " << isFullyExpanded() << "\n";
+			//for (size_t i = 0; i < children.size(); ++i)
+			//	std::cout << "\t" << childValues[i] << "\n";
+			//std::cout << "; selected: " << which << "\n";
+			//std::cout << "; isFullyExpanded: " << isFullyExpanded() << "\n";
 			std::uniform_int_distribution<size_t> distrib(0, children.size() - 1);
 
 			which = static_cast<int>(distrib(randomGenerator));

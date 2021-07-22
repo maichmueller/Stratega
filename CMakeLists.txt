@@ -17,6 +17,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILER_FLAGS}")
 
 option(STRATEGA_BUILD_DOCS "Enable to build the docs. Requires doxygen to be installed on the system" ON)
 option(STRATEGA_BUILD_BINDINGS "Enable to build the bindings to other languages." ON)
+option(STRATEGA_BUILD_TEST "Enable unit test." ON)
 
 # Include sub-projects.
 add_subdirectory("dependencies")
@@ -33,4 +34,11 @@ endif()
 
 if(STRATEGA_BUILD_DOCS)
     add_subdirectory("docs")
+endif()
+
+if(STRATEGA_BUILD_TEST)
+    include(CTest)
+    enable_testing()
+
+    add_subdirectory("tests")
 endif()

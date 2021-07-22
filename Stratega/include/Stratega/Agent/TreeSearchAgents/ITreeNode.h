@@ -80,40 +80,40 @@ namespace SGA
 
 		void printTree(const std::string& prefix, const ITreeNode<NodeType>* node, bool isLast, const std::string& actionName) const
 		{
-			if (node != nullptr)
-			{
-				if (!node->children.empty())
-				{
-					std::cout << prefix;
+			//if (node != nullptr)
+			//{
+			//	if (!node->children.empty())
+			//	{
+			//		std::cout << prefix;
 
-					if (isLast)
-						std::cout << "\\-- ";
-					else
-						std::cout << "|-- ";
+			//		if (isLast)
+			//			std::cout << "\\-- ";
+			//		else
+			//			std::cout << "|-- ";
 
-					// print the value of the node
-					node->print();
-					std::cout << actionName << std::endl;
+			//		// print the value of the node
+			//		node->print();
+			//		std::cout << actionName << std::endl;
 
-					// enter the next tree level - left and right branch
-					for (size_t i = 0; i < node->children.size(); ++i)
-					{
-						printTree(prefix + (isLast ? "   " : "|  "), node->children[i].get(), i == (node->children.size() - 1),
-							"");
-					}
-				}
-				else
-				{
-					std::cout << prefix;
+			//		// enter the next tree level - left and right branch
+			//		for (size_t i = 0; i < node->children.size(); ++i)
+			//		{
+			//			printTree(prefix + (isLast ? "   " : "|  "), node->children[i].get(), i == (node->children.size() - 1),
+			//				"");
+			//		}
+			//	}
+			//	else
+			//	{
+			//		std::cout << prefix;
 
-					if (isLast)
-						std::cout << "\\-- ";
-					else
-						std::cout << "|-- ";
+			//		if (isLast)
+			//			std::cout << "\\-- ";
+			//		else
+			//			std::cout << "|-- ";
 
-					std::cout << node->children.size() << "; " << actionName << std::endl;
-				}
-			}
+			//		std::cout << node->children.size() << "; " << actionName << std::endl;
+			//	}
+			//}
 		}
 
 	};
