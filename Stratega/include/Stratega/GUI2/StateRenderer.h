@@ -29,6 +29,7 @@ namespace SGA
 
 		TextureAtlas atlas;
 		sf::RenderWindow window;
+		sf::Clock deltaClock;
 		const GameState* state;
 		const GameConfig* config;
 	};

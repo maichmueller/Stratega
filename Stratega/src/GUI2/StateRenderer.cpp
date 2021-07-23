@@ -21,6 +21,9 @@ namespace SGA
 		window.create(sf::VideoMode(1920 * 0.5, 1080 * 0.5), "Stratega GUI");
 		window.setFramerateLimit(60);
 
+		// Start clock
+		deltaClock.restart();
+
 		// Initialize texture atlas
 		sf::Image image;
 		image.loadFromFile(config.renderConfig->tileSpritePaths.begin()->second);
@@ -43,21 +46,56 @@ namespace SGA
 		window.setView(view);
 	}
 
+	std::unordered_set<sf::Keyboard::Key> pressedKeys;
 	void StateRenderer::render()
 	{
+		auto deltaTime = deltaClock.restart().asSeconds();
+		
 		sf::Event event{};
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
-				exit(0);
+			switch(event.type)
+			{
+				case sf::Event::Closed: exit(0); break;
+				case sf::Event::KeyPressed:
+				{
+					pressedKeys.emplace(event.key.code);
+				} break;
+				case sf::Event::KeyReleased:
+				{
+					pressedKeys.erase(event.key.code);
+				}
+				default: break;
+			}
 		}
+
+		float moveSpeed = 5;
+		auto view = window.getView();
+		if (pressedKeys.find(sf::Keyboard::W) != pressedKeys.end())
+		{
+			view.move(0, -tileHeight * deltaTime * moveSpeed);
+		}
+		else if (pressedKeys.find(sf::Keyboard::S) != pressedKeys.end())
+		{
+			view.move(0, tileHeight * deltaTime * moveSpeed);
+		}
+
+		if (pressedKeys.find(sf::Keyboard::A) != pressedKeys.end())
+		{
+			view.move(-tileWidth * deltaTime * moveSpeed, 0);
+		}
+		else if (pressedKeys.find(sf::Keyboard::D) != pressedKeys.end())
+		{
+			view.move(tileWidth * deltaTime * moveSpeed, 0);
+		}
+		window.setView(view);
 
 		window.clear();
 
 		// Render grid
 		std::vector<const Entity*> entities(state->entities.size());
-		std::transform(state->entities.begin(), state->entities.end(), entities.begin(), [](const Entity& e) {return &e; });
-		std::sort(entities.begin(), entities.end(), [](const Entity* e1, const Entity* e2)
+		std::ranges::transform(state->entities, entities.begin(), [](const Entity& e) {return &e; });
+		std::ranges::sort(entities, [](const Entity* e1, const Entity* e2)
 		{
 			return std::tie(e1->position.x, e1->position.y) < std::tie(e2->position.x, e2->position.y);
 		});
@@ -69,6 +107,36 @@ namespace SGA
 			for (size_t y = 0; y < state->board.getHeight(); ++y)
 			{
 				const auto& tile = state->board.get(x, y);
+				while(entityIndex < entities.size() && std::tie(entities[entityIndex]->position.x, entities[entityIndex]->position.y) < std::tie(tile.position.x, tile.position.y))
+				{
+					const auto* entity = entities[entityIndex];
+					auto entityCenter = toWorldSpace(entity->position.x, entity->position.y) + sf::Vector2f(0, tileHeight / 2.);
+					auto start = entityCenter - sf::Vector2f(atlas.getSpriteSize().x / 2., atlas.getSpriteSize().y - tileHeight / 2);
+					auto rect = atlas.getSpriteRect(entity->getEntityType().name);
+					auto tileSize = atlas.getSpriteSize();
+
+					sf::Vertex v;
+					v.position = sf::Vector2f(start.x, start.y);
+					v.texCoords = sf::Vector2f(rect.left, rect.top);
+					v.color = sf::Color::White;
+					vertices.append(v);
+
+					v.position = sf::Vector2f(start.x + tileSize.x, start.y);
+					v.texCoords = sf::Vector2f(rect.left + rect.width, rect.top);
+					vertices.append(v);
+
+					v.position = sf::Vector2f(start.x + tileSize.x, start.y + tileSize.y);
+					v.texCoords = sf::Vector2f(rect.left + rect.width, rect.top + rect.height);
+					vertices.append(v);
+
+					v.position = sf::Vector2f(start.x, start.y + tileSize.y);
+					v.texCoords = sf::Vector2f(rect.left, rect.top + rect.height);
+					vertices.append(v);
+					
+					entityIndex++;
+				}
+				
+				
 				auto tileCenter = toWorldSpace(x, y) + sf::Vector2f(0, tileHeight / 2.);
 				auto start = tileCenter - sf::Vector2f(atlas.getSpriteSize().x / 2., atlas.getSpriteSize().y - tileHeight / 2);
 				auto rect = atlas.getSpriteRect(tile.name());
