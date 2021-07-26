@@ -3,6 +3,11 @@
 #include <Stratega/Representation/GameState.h>
 #include <Stratega/GUI2/TextureAtlas.h>
 
+namespace SGA::Detail
+{
+	class RendererImpl;
+}
+
 namespace SGA
 {
 	struct GameConfig;
@@ -12,10 +17,15 @@ namespace SGA
 	{
 	public:
 		StateRenderer();
+		~StateRenderer();
 		
 		void init(const GameState& initialState, const GameConfig& config);
 		void render();
 		void update(const GameState& state);
+
+		void drawTile(const Tile& tile);
+		void drawEntity(const Entity& entity, const SGA::Vector2f& gridPosition);
+		void drawSprite(const std::string& spriteName, const sf::Vector2f& worldPosition);
 
 	private:
 		void renderDebugGrid();
@@ -27,10 +37,14 @@ namespace SGA
 		int tileWidth;
 		int tileHeight;
 
+		std::unique_ptr<Detail::RendererImpl> renderImpl;
 		TextureAtlas atlas;
 		sf::RenderWindow window;
 		sf::Clock deltaClock;
 		const GameState* state;
 		const GameConfig* config;
+
+		sf::Clock fpsClock;
+		int fpsCounter;
 	};
 }

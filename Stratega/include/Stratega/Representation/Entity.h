@@ -172,6 +172,11 @@ namespace SGA
 		void printInfo() const;
 
 		/// <summary>
+		/// Returns the position of the tile this entity is standing on
+		/// <summary>
+		[[nodiscard]] Vector2i getBoardPosition() const { return { static_cast<int>(position.x), static_cast<int>(position.y) }; }
+		
+		/// <summary>
 		/// Gets the list of parameters values. Modifiable.
 		/// <summary>
 		/// <returns>The list of parameters values.</returns>
