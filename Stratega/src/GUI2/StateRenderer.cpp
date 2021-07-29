@@ -71,6 +71,7 @@ namespace SGA
 		auto deltaTime = deltaClock.restart().asSeconds();
 		
 		sf::Event event{};
+		auto view = window.getView();
 		while (window.pollEvent(event))
 		{
 			switch(event.type)
@@ -83,13 +84,21 @@ namespace SGA
 				case sf::Event::KeyReleased:
 				{
 					pressedKeys.erase(event.key.code);
-				}
+				} break;
+				case sf::Event::MouseWheelScrolled:
+				{
+					double zoomValue = 1;
+					if (event.mouseWheelScroll.delta <= -1)
+						zoomValue += deltaTime;
+					else if (event.mouseWheelScroll.delta >= 1)
+						zoomValue -= deltaTime;
+					view.zoom(zoomValue);
+				} break;
 				default: break;
 			}
 		}
 
 		float moveSpeed = 5;
-		auto view = window.getView();
 		if (pressedKeys.find(sf::Keyboard::W) != pressedKeys.end())
 		{
 			view.move(0, -tileHeight * deltaTime * moveSpeed);
@@ -112,15 +121,6 @@ namespace SGA
 		window.clear();
 
 		renderImpl->render(*state, *this);
-		
-		for(auto& entity : state->entities)
-		{
-			sf::CircleShape s;
-			s.setPosition(toWorldSpace(entity.position));
-			s.setRadius(10);
-			s.setOrigin(5, 5);
-			window.draw(s);
-		}
 
 		renderDebugGrid();
 
