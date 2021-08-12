@@ -6,7 +6,6 @@
 
 #include <filesystem>
 
-
 int main(int argc, char** argv)
 {
 	InputParser parser(argc, argv);
