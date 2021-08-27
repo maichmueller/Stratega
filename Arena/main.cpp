@@ -1,9 +1,7 @@
 #include <Stratega/Configuration/GameConfigParser.h>
 #include <Stratega/Logging/Log.h>
-
 #include <Stratega/Arena/Arena.h>
 #include <Stratega/Arena/InputParser.h>
-
 #include <filesystem>
 
 int main(int argc, char** argv)
