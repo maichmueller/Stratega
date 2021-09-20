@@ -3,57 +3,60 @@
 #include <memory>
 #include <stratega/ForwardModel/FunctionParameter.h>
 
-namespace SGA
-{
-	template<typename Function>
-	class FunctionFactory
-	{
-	public:
-		typedef std::function<Function* (const std::string& code, const std::vector<FunctionParameter>& params)> FnAllocator;
-		
-		static FunctionFactory<Function>& get()
-		{
-			static FunctionFactory<Function>& instance = getDefaultFactory();
-			return instance;
-		}
+namespace SGA {
+template < typename Function >
+class FunctionFactory {
+  public:
+   typedef std::function< Function*(
+      const std::string& code, const std::vector< FunctionParameter >& params) >
+      FnAllocator;
 
-		template<typename T>
-		bool registerFunction(const std::string& name)
-		{
-			if (registeredFunctions.find(name) != registeredFunctions.end())
-				return false;
+   static FunctionFactory< Function >& get()
+   {
+      static FunctionFactory< Function >& instance = getDefaultFactory();
+      return instance;
+   }
 
-			registeredFunctions.emplace(
-				name,
-				[](const std::string& code, const std::vector<FunctionParameter>& params) {return static_cast<Function*>(new T(code, params)); }
-			);
-			return true;
-		}
+   template < typename T >
+   bool registerFunction(const std::string& name)
+   {
+      if(registeredFunctions.find(name) != registeredFunctions.end())
+         return false;
 
-		std::unique_ptr<Function> createFunction(const std::string& code, const std::string& name, const std::vector<FunctionParameter>& params)
-		{
-			if (registeredFunctions.find(name) == registeredFunctions.end())
-				return nullptr;
-			
-			return std::unique_ptr<Function>(registeredFunctions.at(name)(code, params));
-		}
+      registeredFunctions.emplace(
+         name, [](const std::string& code, const std::vector< FunctionParameter >& params) {
+            return static_cast< Function* >(new T(code, params));
+         });
+      return true;
+   }
 
-		// This class should not be copied
-		FunctionFactory(const FunctionFactory&) = delete;
-		FunctionFactory(FunctionFactory&&) = delete;
-		FunctionFactory& operator=(const FunctionFactory& other) = delete;
-		FunctionFactory& operator=(FunctionFactory&& other) noexcept = delete;
+   std::unique_ptr< Function > createFunction(
+      const std::string& code,
+      const std::string& name,
+      const std::vector< FunctionParameter >& params)
+   {
+      if(registeredFunctions.find(name) == registeredFunctions.end())
+         return nullptr;
 
-	private:
-		std::unordered_map<std::string, FnAllocator> registeredFunctions;
+      return std::unique_ptr< Function >(registeredFunctions.at(name)(code, params));
+   }
 
-		FunctionFactory() = default;
-		~FunctionFactory() = default;
+   // This class should not be copied
+   FunctionFactory(const FunctionFactory&) = delete;
+   FunctionFactory(FunctionFactory&&) = delete;
+   FunctionFactory& operator=(const FunctionFactory& other) = delete;
+   FunctionFactory& operator=(FunctionFactory&& other) noexcept = delete;
 
-		/// <summary>
-		/// Returns a factory-reference with all functions registered
-		/// Called once to initialize the get() method, do not call more than once!
-		/// </summary>
-		static FunctionFactory<Function>& getDefaultFactory();
-	};
-}
+  private:
+   std::unordered_map< std::string, FnAllocator > registeredFunctions;
+
+   FunctionFactory() = default;
+   ~FunctionFactory() = default;
+
+   /// <summary>
+   /// Returns a factory-reference with all functions registered
+   /// Called once to initialize the get() method, do not call more than once!
+   /// </summary>
+   static FunctionFactory< Function >& getDefaultFactory();
+};
+}  // namespace SGA

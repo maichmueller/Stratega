@@ -1,9 +1,9 @@
 #include <stratega/Agent/DoNothingAgent.h>
 
-namespace SGA
+namespace SGA {
+ActionAssignment DoNothingAgent::computeAction(
+   GameState state, const ForwardModel& /*forwardModel*/, Timer /*timer*/)
 {
-	ActionAssignment DoNothingAgent::computeAction(GameState state, const ForwardModel& /*forwardModel*/, Timer /*timer*/)
-	{
-		return ActionAssignment::createEndActionAssignment(getPlayerID());
-	}
+   return ActionAssignment::createEndActionAssignment(getPlayerID());
 }
+}  // namespace SGA

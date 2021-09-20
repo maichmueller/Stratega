@@ -1,28 +1,26 @@
 #include <stratega/Logging/Log.h>
 #include <stratega/Logging/LoggingScope.h>
 
-namespace SGA::Log
+namespace SGA::Log {
+FileLogger& getDefaultLogger()
 {
-	FileLogger& getDefaultLogger()
-	{
-		if (defaultLogger == nullptr)
-			defaultLogger = std::make_unique<FileLogger>("./sgaLog.log");
+   if(defaultLogger == nullptr)
+      defaultLogger = std::make_unique< FileLogger >("./sgaLog.log");
 
-		return *defaultLogger;
-	}
-
-	void setDefaultLogger(std::unique_ptr<FileLogger> logger)
-	{
-		defaultLogger = std::move(logger);
-	}
-
-	std::string getLoggingScopeKey(const std::string& lastKey)
-	{
-		std::string key;
-		for (const auto& scope : loggingScopes)
-		{
-			key += scope->getName() + "/";
-		}
-		return key + lastKey;
-	}
+   return *defaultLogger;
 }
+
+void setDefaultLogger(std::unique_ptr< FileLogger > logger)
+{
+   defaultLogger = std::move(logger);
+}
+
+std::string getLoggingScopeKey(const std::string& lastKey)
+{
+   std::string key;
+   for(const auto& scope : loggingScopes) {
+      key += scope->getName() + "/";
+   }
+   return key + lastKey;
+}
+}  // namespace SGA::Log

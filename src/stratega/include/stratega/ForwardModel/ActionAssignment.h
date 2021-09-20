@@ -3,73 +3,70 @@
 #include <stratega/ForwardModel/Action.h>
 #include <unordered_map>
 
-namespace SGA
-{
-	/// <summary>
-	/// A collection of action-assignments to entities and players in a game.
-	/// </summary>
-	class ActionAssignment
-	{
+namespace SGA {
+/// <summary>
+/// A collection of action-assignments to entities and players in a game.
+/// </summary>
+class ActionAssignment {
+  private:
+   std::unordered_map< int, Action > entityActions;
+   std::unordered_map< int, Action > playerActions;
 
-	private: 
+  public:
+   /// <summary>
+   /// Assigns the action to the corresponding entity or player. Any existing assignment will be
+   /// overwritten.
+   /// </summary>
+   /// <param name="newAction">The action to be assigned. The first target of the action is used to
+   /// determine who executes this action.</param>
+   void assignActionOrReplace(Action newAction);
 
-		std::unordered_map<int, Action> entityActions;
-		std::unordered_map<int, Action> playerActions;
+   /// <summary>
+   /// Copies the given action-assignment into this object. Any existing assignment will be
+   /// overwritten in case of a conflict.
+   /// </summary>
+   /// <param name="action">The assignment that should be merged into this one.</param>
+   void merge(const ActionAssignment& action);
 
-	public:
+   /// <summary>
+   /// Deletes all assignments.
+   /// </summary>
+   void clear();
 
-		/// <summary>
-		/// Assigns the action to the corresponding entity or player. Any existing assignment will be overwritten.
-		/// </summary>
-		/// <param name="newAction">The action to be assigned. The first target of the action is used to determine who executes this action.</param>
-		void assignActionOrReplace(Action newAction);
+   /// <summary>
+   /// Returns the assignment for an entity.
+   /// </summary>
+   /// <param name="entityID">The ID of the entity.</param>
+   /// <returns>The assigned action or nullptr if no action was assigned.</returns>
+   [[nodiscard]] Action* getEntityAction(int entityID);
 
-		/// <summary>
-		/// Copies the given action-assignment into this object. Any existing assignment will be overwritten in case of a conflict.
-		/// </summary>
-		/// <param name="action">The assignment that should be merged into this one.</param>
-		void merge(const ActionAssignment& action);
+   /// <summary>
+   /// Returns the assignment for an player.
+   /// </summary>
+   /// <param name="playerID">The ID of the player.</param>
+   /// <returns>The assigned action or nullptr if no action was assigned.</returns>
+   [[nodiscard]] Action* getPlayerAction(int playerID);
 
-		/// <summary>
-		/// Deletes all assignments.
-		/// </summary>
-		void clear();
+   /// <summary>
+   /// Returns the amount of actions that are assigned to entities and players.
+   /// </summary>
+   [[nodiscard]] size_t getAssignmentCount() const;
 
-		/// <summary>
-		/// Returns the assignment for an entity.
-		/// </summary>
-		/// <param name="entityID">The ID of the entity.</param>
-		/// <returns>The assigned action or nullptr if no action was assigned.</returns>
-		[[nodiscard]] Action* getEntityAction(int entityID);
+   [[nodiscard]] const std::unordered_map< int, Action >& getEntityActions() const;
+   [[nodiscard]] const std::unordered_map< int, Action >& getPlayerActions() const;
 
-		/// <summary>
-		/// Returns the assignment for an player.
-		/// </summary>
-		/// <param name="playerID">The ID of the player.</param>
-		/// <returns>The assigned action or nullptr if no action was assigned.</returns>
-		[[nodiscard]] Action* getPlayerAction(int playerID);
+   /// <summary>
+   /// Constructs a ActionAssignment from a single action, useful for TBS-Games.
+   /// </summary>
+   /// <param name="a">The action that should be contained in the ActionAssignment.</param>
+   /// <returns>An ActionAssignment containing a single assignment.</returns>
+   static ActionAssignment fromSingleAction(Action a);
 
-		/// <summary>
-		/// Returns the amount of actions that are assigned to entities and players.
-		/// </summary>
-		[[nodiscard]] size_t getAssignmentCount() const;
-		
-		[[nodiscard]] const std::unordered_map<int, Action>& getEntityActions() const;
-		[[nodiscard]] const std::unordered_map<int, Action>& getPlayerActions() const;
-
-		/// <summary>
-		/// Constructs a ActionAssignment from a single action, useful for TBS-Games.
-		/// </summary>
-		/// <param name="a">The action that should be contained in the ActionAssignment.</param>
-		/// <returns>An ActionAssignment containing a single assignment.</returns>
-		static ActionAssignment fromSingleAction(Action a);
-
-		/// <summary>
-		/// Generates an ActionAssignment used by the game to end the tick/turn.
-		/// </summary>
-		/// <param name="playerID">ID of the player for which the End action is created</param>
-		/// <returns>ActionAssignment that ends the current turn for the plater ID supplied</returns>
-		static ActionAssignment createEndActionAssignment(int playerID);
-
-	};
-}
+   /// <summary>
+   /// Generates an ActionAssignment used by the game to end the tick/turn.
+   /// </summary>
+   /// <param name="playerID">ID of the player for which the End action is created</param>
+   /// <returns>ActionAssignment that ends the current turn for the plater ID supplied</returns>
+   static ActionAssignment createEndActionAssignment(int playerID);
+};
+}  // namespace SGA

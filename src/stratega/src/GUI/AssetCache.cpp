@@ -1,38 +1,34 @@
-#include <string>
 #include <stratega/GUI/AssetCache.h>
+#include <string>
 
+void AssetCache::loadTexture(std::string name, std::string fileName)
+{
+   sf::Texture tex;
 
-void AssetCache::loadTexture(std::string name, std::string fileName) {
-	sf::Texture tex;
-
-	if (tex.loadFromFile(fileName))
-	{
-		this->textures.emplace(name, tex);
-	}
-	else
-	{
-		throw std::runtime_error("file not found");
-	}
+   if(tex.loadFromFile(fileName)) {
+      this->textures.emplace(name, tex);
+   } else {
+      throw std::runtime_error("file not found");
+   }
 }
 
-void AssetCache::loadFont(std::string name, std::string fileName) {
-	sf::Font font;
+void AssetCache::loadFont(std::string name, std::string fileName)
+{
+   sf::Font font;
 
-	if (font.loadFromFile(fileName)) {
-
-		this->fonts.emplace(name, font);
-	}
-	else
-	{
-		throw std::runtime_error("file not found");
-	}		
+   if(font.loadFromFile(fileName)) {
+      this->fonts.emplace(name, font);
+   } else {
+      throw std::runtime_error("file not found");
+   }
 }
 
-sf::Texture& AssetCache::getTexture(std::string name) {
-	return this->textures.at(name);
+sf::Texture& AssetCache::getTexture(std::string name)
+{
+   return this->textures.at(name);
 }
 
-sf::Font& AssetCache::getFont(std::string name) {
-	return this->fonts.at(name);
+sf::Font& AssetCache::getFont(std::string name)
+{
+   return this->fonts.at(name);
 }
-

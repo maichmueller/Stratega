@@ -2,15 +2,17 @@
 #include <stratega/Agent/ActionScripts/BaseActionScript.h>
 
 namespace SGA {
-	class UseSpecialAbilityScript : public BaseActionScript
-	{
+class UseSpecialAbilityScript: public BaseActionScript {
+  public:
+   using BaseActionScript::BaseActionScript;
 
-	public:
-		UseSpecialAbilityScript() : BaseActionScript() {};
-
-		Action getAction(const GameState& gameState, std::vector<Action>& actionSpace, int playerID) const override;
-		Action getActionForUnit(const GameState& gameState, std::vector<Action>& actionSpace, int playerID, int unitID) const override;
-		[[nodiscard]] std::string toString() const override { return "UseSpecialAbilityScript"; };
-
-	};
-}
+   Action getAction(
+      const GameState& gameState, std::vector< Action >& actionSpace, int playerID) override;
+   Action getActionForUnit(
+      const GameState& gameState,
+      std::vector< Action >& actionSpace,
+      int playerID,
+      int unitID) override;
+   [[nodiscard]] std::string toString() const override { return "UseSpecialAbilityScript"; };
+};
+}  // namespace SGA

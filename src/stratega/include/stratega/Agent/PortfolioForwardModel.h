@@ -1,31 +1,34 @@
 #pragma once
-#include <stratega/Representation/GameState.h>
-#include <stratega/ForwardModel/TBSForwardModel.h>
-#include <stratega/ForwardModel/RTSForwardModel.h>
 #include <stratega/Agent/ActionScripts/BaseActionScript.h>
+#include <stratega/ForwardModel/RTSForwardModel.h>
+#include <stratega/ForwardModel/TBSForwardModel.h>
+#include <stratega/Representation/GameState.h>
 
-namespace SGA
-{
-	class PortfolioTBSForwardModel : public TBSForwardModel
-	{
-	public:
-		std::vector<std::shared_ptr<BaseActionScript>>& portfolio;
-		
-		PortfolioTBSForwardModel(TBSForwardModel forwardModel, std::vector<std::shared_ptr<BaseActionScript>>& portfolio)
-			: TBSForwardModel(std::move(forwardModel)), portfolio(portfolio) {}
-		void generateActions(const GameState& state, int playerID, std::vector<Action>& actionBucket) const override;
-	};
+namespace SGA {
+class PortfolioTBSForwardModel: public TBSForwardModel {
+  public:
+   std::vector< std::shared_ptr< BaseActionScript > >& portfolio;
 
-	
-	class PortfolioRTSForwardModel : public RTSForwardModel
-	{
-	public:
-		std::vector<std::shared_ptr<BaseActionScript>>& portfolio;
+   PortfolioTBSForwardModel(
+      TBSForwardModel forwardModel, std::vector< std::shared_ptr< BaseActionScript > >& portfolio_)
+       : TBSForwardModel(std::move(forwardModel)), portfolio(portfolio_)
+   {
+   }
+   void generateActions(
+      const GameState& state, int playerID, std::vector< Action >& actionBucket) const override;
+};
 
-		PortfolioRTSForwardModel(RTSForwardModel forwardModel, std::vector<std::shared_ptr<BaseActionScript>>& portfolio)
-			: RTSForwardModel(std::move(forwardModel)), portfolio(portfolio) {}
-		void generateActions(const GameState& state, int playerID, std::vector<Action>& actionBucket) const override;
-	};
+class PortfolioRTSForwardModel: public RTSForwardModel {
+  public:
+   std::vector< std::shared_ptr< BaseActionScript > >& portfolio;
 
+   PortfolioRTSForwardModel(
+      RTSForwardModel forwardModel, std::vector< std::shared_ptr< BaseActionScript > >& portfolio_)
+       : RTSForwardModel(std::move(forwardModel)), portfolio(portfolio_)
+   {
+   }
+   void generateActions(
+      const GameState& state, int playerID, std::vector< Action >& actionBucket) const override;
+};
 
-}
+}  // namespace SGA
